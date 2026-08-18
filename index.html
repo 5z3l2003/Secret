@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>IMPOSTERS — Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&family=Tajawal:wght@400;500;700&family=IBM+Plex+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #12141b;
+    --panel: #1b1f29;
+    --panel-2: #232836;
+    --line: #323a4c;
+    --cream: #ece5d3;
+    --muted: #8b93a6;
+    --gold: #e3a23c;
+    --gold-dim: #6d5327;
+    --red: #c0392b;
+    --red-dim: #3a1e1b;
+    --teal: #3fa796;
+    --teal-dim: #1c3b36;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #1b2030 0%, var(--bg) 60%);
+    color:var(--cream);
+    font-family:'Tajawal', sans-serif;
+    min-height:100vh;
+    padding:20px 14px 60px;
+  }
+  .wrap{max-width:480px;margin:0 auto;}
+  h1,h2,h3{font-family:'Cairo', sans-serif; margin:0;}
+  .brand{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    margin-bottom:22px; opacity:0.95;
+  }
+  .brand .mark{
+    width:34px;height:34px;border-radius:50%;
+    border:2px solid var(--gold);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace;color:var(--gold);font-weight:600;font-size:13px;
+    flex-shrink:0;
+  }
+  .brand h1{font-size:19px; letter-spacing:0.5px;}
+  .card{
+    background:linear-gradient(180deg,var(--panel),var(--panel-2));
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 18px;
+    margin-bottom:14px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.35);
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px; letter-spacing:1.5px; color:var(--gold);
+    text-transform:uppercase; margin-bottom:6px; display:block;
+  }
+  p{color:var(--muted); line-height:1.7; font-size:14.5px; margin:6px 0 0;}
+  .btn{
+    width:100%; border:none; border-radius:10px; padding:15px 16px;
+    font-family:'Cairo',sans-serif; font-weight:800; font-size:15.5px;
+    cursor:pointer; margin-top:10px; transition:transform .12s ease, opacity .12s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-gold{background:var(--gold); color:#1a1206;}
+  .btn-teal{background:var(--teal); color:#04211c;}
+  .btn-red{background:var(--red); color:#2a0a06;}
+  .btn-ghost{background:transparent; color:var(--cream); border:1px solid var(--line);}
+  .btn:disabled{opacity:0.35; cursor:not-allowed;}
+  input[type=text], select{
+    width:100%; background:#0f121a; border:1px solid var(--line); color:var(--cream);
+    border-radius:10px; padding:13px 14px; font-size:15px; font-family:'Tajawal',sans-serif;
+    margin-top:6px;
+  }
+  input[type=number]{
+    width:64px; background:#0f121a; border:1px solid var(--line); color:var(--cream);
+    border-radius:8px; padding:8px; font-size:14px; text-align:center; font-family:'IBM Plex Mono',monospace;
+  }
+  label{font-size:13px; color:var(--muted); display:block; margin-top:12px;}
+  .row{display:flex; gap:10px;}
+  .row .btn{margin-top:10px;}
+  .code-stamp{
+    font-family:'IBM Plex Mono',monospace; letter-spacing:2px; font-size:19px; font-weight:600;
+    text-align:center; color:var(--gold); border:2px dashed var(--gold-dim);
+    border-radius:10px; padding:14px 8px; margin:10px 0; background:rgba(227,162,60,0.06);
+    word-break:break-all;
+  }
+  .players-list{list-style:none; padding:0; margin:10px 0 0;}
+  .players-list li{
+    display:flex; align-items:center; gap:10px;
+    background:#161a24; border:1px solid var(--line); border-radius:10px;
+    padding:11px 13px; margin-bottom:8px; font-size:14.5px;
+  }
+  .players-list li .dot{width:8px;height:8px;border-radius:50%; background:var(--teal); flex-shrink:0;}
+  .chip{
+    display:inline-block; font-family:'IBM Plex Mono',monospace; font-size:11px;
+    padding:3px 9px; border-radius:20px; border:1px solid var(--line); color:var(--muted);
+  }
+  .chip.leader{border-color:var(--gold); color:var(--gold);}
+  .pick{
+    display:flex; align-items:center; justify-content:space-between;
+    background:#161a24; border:1px solid var(--line); border-radius:10px;
+    padding:12px 14px; margin-bottom:8px; cursor:pointer; user-select:none;
+  }
+  .pick.selected{border-color:var(--gold); background:rgba(227,162,60,0.08);}
+  .pick .box{width:19px;height:19px;border-radius:5px;border:1.5px solid var(--muted); flex-shrink:0;}
+  .pick.selected .box{background:var(--gold); border-color:var(--gold);}
+  .track{display:flex; gap:7px; justify-content:center; margin:14px 0 4px;}
+  .track .m{
+    width:34px;height:34px;border-radius:8px; display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; border:1.5px solid var(--line); color:var(--muted);
+  }
+  .track .m.current{border-color:var(--gold); color:var(--gold);}
+  .track .m.success{background:var(--teal-dim); border-color:var(--teal); color:var(--teal);}
+  .track .m.fail{background:var(--red-dim); border-color:var(--red); color:var(--red);}
+  .role-card{
+    text-align:center; padding:26px 18px;
+  }
+  .seal{
+    width:96px;height:96px;border-radius:50%; margin:8px auto 16px;
+    background:radial-gradient(circle at 35% 30%, #3a2e18, #150f06);
+    border:2px solid var(--gold); display:flex;align-items:center;justify-content:center;
+    font-size:34px; user-select:none; -webkit-user-select:none; touch-action:manipulation;
+  }
+  .role-reveal{font-family:'Cairo',sans-serif; font-weight:800; font-size:20px; min-height:26px;}
+  .hint{font-size:12px; color:var(--muted); margin-top:8px;}
+  .banner{
+    position:fixed; inset:0; background:rgba(10,11,15,0.92); z-index:50;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+    animation:fade .25s ease;
+  }
+  @keyframes fade{from{opacity:0} to{opacity:1}}
+  .banner .result{
+    font-family:'Cairo',sans-serif; font-weight:800; font-size:15px;
+    padding:26px 34px; border-radius:16px; text-align:center;
+  }
+  .banner .result.success{border:2px solid var(--teal); color:var(--teal); background:rgba(63,167,150,0.08);}
+  .banner .result.fail{border:2px solid var(--red); color:var(--red); background:rgba(192,57,43,0.08);}
+  .banner .result .big{font-size:36px; display:block; margin-bottom:8px;}
+  .waiting{
+    display:flex; align-items:center; gap:10px; padding:18px 4px; color:var(--muted); font-size:14.5px;
+  }
+  .spinner{
+    width:16px;height:16px;border-radius:50%; border:2px solid var(--line); border-top-color:var(--gold);
+    animation:spin 0.8s linear infinite; flex-shrink:0;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .rules{font-size:12.5px; color:var(--muted); line-height:1.9;}
+  .rules b{color:var(--cream);}
+  .link{color:var(--gold); text-decoration:underline; cursor:pointer; font-size:13px;}
+  .flex-between{display:flex; align-items:center; justify-content:space-between;}
+  .role-list li{display:flex; justify-content:space-between; align-items:center;}
+  .role-list .tag{font-family:'IBM Plex Mono',monospace; font-size:11px; padding:3px 9px; border-radius:20px;}
+  .tag.loyal{background:var(--teal-dim); color:var(--teal);}
+  .tag.spy{background:var(--red-dim); color:var(--red);}
+  .cfg-row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 0; border-bottom:1px solid var(--line);}
+  .cfg-row:last-child{border-bottom:none;}
+  .cfg-row span{font-size:13.5px;}
+  .error-box{background:var(--red-dim); border:1px solid var(--red); color:#ffb4a8; border-radius:10px; padding:11px 13px; font-size:13.5px; margin-top:10px;}
+  .timer-ring{
+    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:26px;
+    width:64px;height:64px;border-radius:50%; display:flex;align-items:center;justify-content:center;
+    border:3px solid var(--gold); margin:6px auto 4px; color:var(--gold);
+  }
+  .timer-ring.low{border-color:var(--red); color:var(--red);}
+  .vote-status{margin-top:14px; display:grid; gap:7px;}
+  .vote-row{display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background:#161a24; border:1px solid var(--line); border-radius:9px; padding:9px 11px; font-size:13px;}
+  .vote-row .vote-name{display:flex; align-items:center; gap:8px;}
+  .vote-state{font-family:'Cairo',sans-serif; font-weight:800; font-size:12px;}
+  .vote-state.approve{color:var(--teal);}
+  .vote-state.reject{color:var(--red);}
+  .vote-state.wait{color:var(--muted);}
+  .mission-info{display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:10px 0;}
+  .mission-info .chip{border-color:var(--gold-dim); color:var(--gold);}
+  .host-controls{margin-top:12px; padding-top:12px; border-top:1px solid var(--line);}
+  .copybtn{font-size:12px; color:var(--gold); background:none; border:1px solid var(--gold-dim); border-radius:8px; padding:6px 12px; cursor:pointer; display:block; margin:0 auto;}
+ 
+  .host-panel{margin-top:14px;border:1px solid var(--gold-dim);background:linear-gradient(180deg,#15120b,#10131a)}
+  .host-actions{display:grid;gap:7px;margin-top:10px}
+  .host-player{display:flex;align-items:center;justify-content:space-between;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:#11151e}
+  .host-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .btn-small{padding:6px 10px;font-size:11px}
+
+  body{background:
+    radial-gradient(700px 360px at 50% -80px,rgba(228,162,60,.16),transparent 65%),
+    radial-gradient(500px 280px at 100% 30%,rgba(63,167,150,.10),transparent 65%),
+    linear-gradient(180deg,#07090d 0%,#0b0e15 48%,#07090d 100%);}
+  .wrap{max-width:520px;padding-top:6px}
+  .brand{justify-content:flex-start;gap:12px;margin:0 4px 18px;padding:6px 2px}
+  .brand .mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(145deg,#f1bd50,#8b5d16);color:#100c05;border:none;box-shadow:0 8px 25px rgba(227,162,60,.18);font-size:18px}
+  .brand h1{font-size:23px;line-height:1;letter-spacing:3px;font-weight:900}
+  .brand-kicker{font:600 9px 'IBM Plex Mono',monospace;letter-spacing:1.8px;color:#7e8798;margin-bottom:5px}
+  .card{border-radius:18px;background:linear-gradient(145deg,rgba(25,30,42,.96),rgba(13,17,24,.98));border:1px solid rgba(255,255,255,.07);box-shadow:0 16px 45px rgba(0,0,0,.32),inset 0 1px rgba(255,255,255,.025);padding:21px 18px}
+  .hero-card{position:relative;overflow:hidden;padding:28px 20px;background:radial-gradient(circle at 85% 15%,rgba(227,162,60,.12),transparent 35%),linear-gradient(145deg,#171d29,#0d1118)}
+  .hero-card:after{content:'IMPOSTER';position:absolute;left:-28px;bottom:-22px;font:900 78px 'Cairo',sans-serif;color:rgba(255,255,255,.018);transform:rotate(-8deg);pointer-events:none}
+  .hero-logo{font:900 38px 'Cairo',sans-serif;letter-spacing:5px;color:#f0c35f;text-align:center;text-shadow:0 0 28px rgba(240,195,95,.14);margin:5px 0 2px}
+  .hero-sub{text-align:center;color:#9ca5b6;font-size:13px;margin-bottom:20px}
+  .btn{border-radius:13px;min-height:50px;box-shadow:0 7px 18px rgba(0,0,0,.16)}
+  .btn-gold{background:linear-gradient(135deg,#f2c75d,#c78a2d)}
+  .btn-red{background:linear-gradient(135deg,#e0525d,#a72d39);color:#fff}
+  .btn-teal{background:linear-gradient(135deg,#54d8bf,#278f7d)}
+  .btn-ghost{background:rgba(255,255,255,.025)}
+  .code-stamp{font-size:31px;letter-spacing:8px;border-radius:15px;background:rgba(227,162,60,.055);box-shadow:inset 0 0 30px rgba(227,162,60,.035)}
+  input[type=text],select,input[type=number]{border-radius:12px;border-color:#2c3444;background:#0b0f16}
+  input[type=text]:focus,select:focus{outline:none;border-color:#9b7330;box-shadow:0 0 0 3px rgba(227,162,60,.08)}
+  .players-list li,.host-player,.pick,.vote-row{border-radius:12px;background:rgba(255,255,255,.025);border-color:#293140}
+  .players-list li{min-height:48px}
+  .host-panel{border-color:#6d5327;background:radial-gradient(circle at 0 0,rgba(227,162,60,.10),transparent 40%),linear-gradient(145deg,#18150e,#10141b)}
+  .host-panel .host-player{background:rgba(0,0,0,.16)}
+  .host-toolbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+  .host-toolbar .btn{margin-top:0;min-height:45px;font-size:13px}
+  .danger-zone{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06)}
+  .section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+  .section-title h3{font-size:14px}
+  .live-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#4ee0c2;box-shadow:0 0 10px #4ee0c2;margin-left:6px}
+  .status-card{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px}
+  .stat{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px;text-align:center}
+  .stat b{display:block;font:800 20px 'IBM Plex Mono',monospace;color:#f0c35f}.stat span{font-size:10px;color:#7f889a}
+  .role-card{border-color:#3b3020;background:radial-gradient(circle at 50% 0,rgba(227,162,60,.10),transparent 48%),linear-gradient(145deg,#171a22,#0c1016)}
+  .seal{box-shadow:0 0 35px rgba(227,162,60,.08)}
+  @media(max-width:380px){.hero-logo{font-size:31px}.host-toolbar{grid-template-columns:1fr}.code-stamp{font-size:27px;letter-spacing:6px}}
+
+  .host-settings-btn,.host-main-btn{width:100%;font-weight:900;letter-spacing:.3px}
+  .host-fab-wrap{margin:12px 0}
+  .host-settings-card{border:1px solid rgba(227,162,60,.35);box-shadow:0 18px 45px rgba(0,0,0,.28)}
+  .host-stats{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.host-stats span{background:var(--panel-2);border:1px solid var(--line);padding:8px 10px;border-radius:10px;font-size:12px}
+  .host-player{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .host-player:last-child{border-bottom:0}.host-toolbar{display:grid;grid-template-columns:1fr;gap:9px;margin-top:14px}
+  .btn-small{padding:7px 10px;font-size:12px;width:auto}
+  .lobby-head{position:relative}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><div class="mark">I</div><div><div class="brand-kicker">ONLINE SOCIAL DEDUCTION</div><h1>IMPOSTERS</h1></div></div>
+  <div id="root"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ---------------- Supabase storage + realtime ---------------- */
+const SUPABASE_URL = 'https://foqtygphjteuyyqosynh.supabase.co';
+const SUPABASE_REST_URL = 'https://foqtygphjteuyyqosynh.supabase.co/rest/v1/';
+const SUPABASE_KEY = 'sb_publishable_qMZoiMPpeliN_9EY6sbfsQ_JBK1CAwb';
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function forceUpper(el){ if(el) el.value=(el.value||'').toUpperCase().replace(/[^A-Z0-9]/g,''); }
+document.addEventListener('input', e=>{ if(e.target && e.target.id==='joinCode') forceUpper(e.target); });
+if(!SUPABASE_URL.startsWith('https://') || SUPABASE_KEY.startsWith('ضع_')){
+  console.error('Supabase configuration is missing.');
+}
+
+
+async function createRoomCode(){
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  for(let attempt=0; attempt<10; attempt++){
+    let code = '';
+    for(let i=0;i<6;i++) code += chars[Math.floor(Math.random()*chars.length)];
+
+    const { data: existing, error: checkError } = await supabaseClient
+      .from('game_rooms')
+      .select('code')
+      .eq('code', code)
+      .maybeSingle();
+
+    if(checkError) throw new Error('تعذر التحقق من الغرفة: ' + checkError.message);
+    if(existing) continue;
+
+    const { error } = await supabaseClient
+      .from('game_rooms')
+      .insert({code, host_name:'', status:'lobby'});
+
+    if(!error) return code;
+    if(error.code !== '23505') throw new Error('تعذر إنشاء الغرفة: ' + error.message);
+  }
+  throw new Error('تعذر إنشاء كود غرفة فريد، حاول مرة أخرى');
+}
+
+function withTimeout(promise, ms=8000){
+  return Promise.race([
+    promise,
+    new Promise((_, reject)=>setTimeout(()=>reject(new Error('TIMEOUT')), ms))
+  ]);
+}
+
+async function sSet(roomCode, key, value){
+  try{
+    const {error} = await supabaseClient.from('game_state').upsert(
+      {
+        room_code: roomCode,
+        state_key: key,
+        state_value: value,
+        updated_at: new Date().toISOString()
+      },
+      {onConflict:'room_code,state_key'}
+    );
+    return !error;
+  }catch(e){ return false; }
+}
+
+async function sGet(roomCode, key){
+  try{
+    const {data, error} = await supabaseClient
+      .from('game_state')
+      .select('state_value')
+      .eq('room_code', roomCode)
+      .eq('state_key', key)
+      .maybeSingle();
+    return error ? null : (data ? data.state_value : null);
+  }catch(e){ return null; }
+}
+
+async function kickPlayer(name){ return actionHostKick(name); }
+
+async function leaveIfKicked(){
+  if(!S.code || !S.name || isHost()) return false;
+  const kicked = await withTimeout(sGet(S.code, 'kicked:'+S.name), 5000).catch(()=>null);
+  if(kicked){
+    alert('تم طردك من الغرفة بواسطة المضيف.');
+    actionRestart();
+    return true;
+  }
+  return false;
+}
+
+async function sListValues(roomCode, prefix){
+  const out = {};
+  try{
+    const {data, error} = await supabaseClient
+      .from('game_state')
+      .select('state_key,state_value')
+      .eq('room_code', roomCode)
+      .like('state_key', prefix + '%');
+
+    if(error || !data) return out;
+    for(const row of data){
+      const value = row.state_value;
+      if(prefix === prefixPlayers() && value && value.kicked) continue;
+      out[row.state_key.slice(prefix.length)] = value;
+    }
+  }catch(e){}
+  return out;
+}
+
+async function startRealtime(){
+  try{
+    await supabaseClient.removeAllChannels();
+    if(!S.code) return;
+    supabaseClient
+      .channel('game-' + S.code)
+      .on(
+        'postgres_changes',
+        {event:'*', schema:'public', table:'game_state', filter:'room_code=eq.' + S.code},
+        async () => { await pollOnce(); }
+      )
+      .subscribe();
+  }catch(e){ console.warn('Realtime error:', e); }
+}
+
+async function stopRealtime(){
+  try{ await supabaseClient.removeAllChannels(); }catch(e){}
+}
+
+/* ---------------- Game constants ---------------- */
+const DEFAULT_TABLE = {
+  5:{sizes:[2,3,2,3,3], fails:[1,1,1,1,1], spies:2},
+  6:{sizes:[2,3,4,3,4], fails:[1,1,1,1,1], spies:2},
+  7:{sizes:[2,3,3,4,4], fails:[1,1,1,2,1], spies:3},
+  8:{sizes:[3,4,4,5,5], fails:[1,1,1,2,1], spies:3},
+  9:{sizes:[3,4,4,5,5], fails:[1,1,1,2,1], spies:3},
+  10:{sizes:[3,4,4,5,5], fails:[1,1,1,2,1], spies:4},
+};
+function defaultConfig(numPlayers, numMissions){
+  numMissions = numMissions || 5;
+  if(DEFAULT_TABLE[numPlayers] && numMissions===5){
+    const t = DEFAULT_TABLE[numPlayers];
+    return {numPlayers, numMissions, teamSizes:[...t.sizes], failsNeeded:[...t.fails], numSpies:t.spies, decisionSeconds:60};
+  }
+  const sizes=[], fails=[];
+  for(let i=0;i<numMissions;i++){
+    sizes.push(Math.max(2, Math.min(numPlayers-1, 2 + Math.round(i*(numPlayers-3)/Math.max(1,numMissions-1)))));
+    fails.push(1);
+  }
+  return {numPlayers, numMissions, teamSizes:sizes, failsNeeded:fails, numSpies:Math.max(1,Math.round(numPlayers/3)), decisionSeconds:60};
+}
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function majorityNeeded(n){ return Math.ceil((n+1)/2); }
+
+/* ---------------- App state ---------------- */
+const S = {
+  screen:'landing',
+  name:'',
+  code:'',            // this IS the Supabase room code
+  meta:null,
+  players:{},
+  cfgDraft:null,
+  joinError:'',
+  createError:'',
+  creating:false,
+  joining:false,
+  revealHeld:false,
+  lastMissionCount:0,
+  pendingBanner:null,
+  votes:{},
+  missionCards:{},
+  pollHandle:null,
+  tickHandle:null,
+  hostPanelOpen:false,
+};
+
+function keyMeta(){ return 'meta'; }
+function prefixPlayers(){ return 'players:'; }
+function prefixVotes(mission, attempt){ return `votes:${mission}:${attempt}:`; }
+function prefixCards(mission){ return `cards:${mission}:`; }
+
+async function getCurrentVotes(){
+  if(!S.meta) return {};
+  return await sListValues(S.code, prefixVotes(S.meta.currentMission, S.meta.attempt));
+}
+
+const root = document.getElementById('root');
+function render(){ root.innerHTML = view(); }
+
+/* ---------------- Polling ---------------- */
+function startPolling(){
+  stopPolling();
+  S.pollHandle = setInterval(pollOnce, 4500);
+  S.tickHandle = setInterval(()=>{ if(S.meta && S.meta.status==='mission') render(); }, 1000);
+  pollOnce();
+}
+function stopPolling(){
+  if(S.pollHandle){ clearInterval(S.pollHandle); S.pollHandle=null; }
+  if(S.tickHandle){ clearInterval(S.tickHandle); S.tickHandle=null; }
+}
+
+async function pollOnce(){
+  if(!S.code) return;
+  if(await leaveIfKicked()) return;
+  const meta = await sGet(S.code, keyMeta());
+  if(meta) S.meta = meta;
+  if(S.meta){
+    S.players = await sListValues(S.code, prefixPlayers());
+  }
+  if(S.meta && S.meta.status === 'voting'){
+    S.votes = await getCurrentVotes();
+  } else {
+    S.votes = {};
+  }
+  if(S.meta && S.meta.status === 'mission' && S.meta.proposedTeam){
+    S.missionCards = await sListValues(S.code, prefixCards(S.meta.currentMission));
+  } else {
+    S.missionCards = {};
+  }
+  if(S.meta && S.meta.missionResults && S.meta.missionResults.length > S.lastMissionCount){
+    const latest = S.meta.missionResults[S.meta.missionResults.length-1];
+    S.pendingBanner = latest;
+    S.lastMissionCount = S.meta.missionResults.length;
+    render();
+    setTimeout(()=>{ S.pendingBanner=null; render(); }, 2600);
+  }
+  if(S.meta && S.meta.status === 'voting'){
+    await maybeHostTallyVotes();
+  }
+  if(S.meta && S.meta.status === 'mission'){
+    await maybeHostTallyCards();
+  }
+  render();
+}
+function isHost(){ return S.meta && S.name === S.meta.hostName; }
+
+async function maybeHostTallyVotes(){
+  if(!isHost()) return;
+  const m = S.meta;
+  const votes = await sListValues(S.code, prefixVotes(m.currentMission, m.attempt));
+  const total = m.playersOrder.length;
+  if(Object.keys(votes).length < total) return;
+  let approve=0, reject=0;
+  for(const v of Object.values(votes)){ if(v==='approve') approve++; else reject++; }
+  const accepted = approve > reject;
+  let next = {...m, updatedAt: Date.now()};
+  if(accepted){
+    next.status = 'mission';
+    next.missionDeadline = Date.now() + (m.config.decisionSeconds||60)*1000;
+  } else {
+    next.rejectStreak = (m.rejectStreak||0)+1;
+    if(next.rejectStreak >= 5){
+      next.status = 'game-over';
+      next.winner = 'spies';
+      next.reason = 'five-rejections';
+    } else {
+      next.status = 'team-select';
+      next.leaderIndex = (m.leaderIndex+1) % total;
+      next.attempt = (m.attempt||1)+1;
+      next.proposedTeam = [];
+    }
+  }
+  await sSet(S.code, keyMeta(), next);
+  S.meta = next;
+}
+
+async function maybeHostTallyCards(){
+  if(!isHost()) return;
+  const m = S.meta;
+  const cards = await sListValues(S.code, prefixCards(m.currentMission));
+  const teamSize = m.config.teamSizes[m.currentMission];
+  const timeUp = m.missionDeadline && Date.now() >= m.missionDeadline;
+  if(Object.keys(cards).length < teamSize && !timeUp) return;
+  const finalCards = {...cards};
+  for(const p of m.proposedTeam){
+    if(!(p in finalCards)) finalCards[p] = 'success';
+  }
+  let fails=0;
+  for(const c of Object.values(finalCards)){ if(c==='sabotage') fails++; }
+  const needed = m.config.failsNeeded[m.currentMission];
+  const result = fails >= needed ? 'fail' : 'success';
+  const missionResults = [...(m.missionResults||[]), {mission:m.currentMission, result}];
+  const successCount = missionResults.filter(r=>r.result==='success').length;
+  const failCount = missionResults.filter(r=>r.result==='fail').length;
+  const need = majorityNeeded(m.config.numMissions);
+  let next = {...m, missionResults, updatedAt: Date.now()};
+  delete next.missionDeadline;
+  if(failCount >= need){
+    next.status='game-over'; next.winner='spies'; next.reason='missions';
+  } else if(successCount >= need){
+    next.status='game-over'; next.winner='loyal'; next.reason='missions';
+  } else {
+    next.status='team-select';
+    next.currentMission = m.currentMission+1;
+    next.leaderIndex = (m.leaderIndex+1) % m.playersOrder.length;
+    next.attempt = 1;
+    next.rejectStreak = 0;
+    next.proposedTeam = [];
+  }
+  await sSet(S.code, keyMeta(), next);
+  S.meta = next;
+}
+
+/* ---------------- Actions ---------------- */
+function actionCreateRoomGo(){
+  S.cfgDraft = defaultConfig(5,5);
+  S.screen='create';
+  render();
+}
+function actionJoinGo(){ S.screen='join'; S.joinError=''; render(); }
+
+async function actionSubmitCreate(){
+  const name = document.getElementById('hostName').value.trim();
+  if(!name){ alert('اكتب اسمك'); return; }
+  const numPlayers = parseInt(document.getElementById('cfgNumPlayers').value);
+  const numMissions = parseInt(document.getElementById('cfgNumMissions').value);
+  const numSpies = parseInt(document.getElementById('cfgNumSpies').value);
+  const decisionSeconds = parseInt(document.getElementById('cfgDecisionSeconds').value) || 60;
+  const teamSizes=[], failsNeeded=[];
+  for(let i=0;i<numMissions;i++){
+    teamSizes.push(parseInt(document.getElementById('size_'+i).value)||2);
+    failsNeeded.push(parseInt(document.getElementById('fail_'+i).value)||1);
+  }
+  S.creating = true; S.createError=''; render();
+  let bucket;
+  try{
+    bucket = await createRoomCode();
+  }catch(e){
+    S.creating=false; S.createError='تعذّر إنشاء الغرفة. التفاصيل: ' + (e && e.message ? e.message : 'غير معروف'); render(); return;
+  }
+  const meta = {
+    hostName:name, status:'lobby',
+    config:{numPlayers, numMissions, teamSizes, failsNeeded, numSpies, decisionSeconds},
+    createdAt: Date.now(), updatedAt: Date.now(),
+    playersOrder:[], leaderIndex:0, currentMission:0, attempt:1, rejectStreak:0,
+    proposedTeam:[], roles:{}, missionResults:[]
+  };
+  const ok = await sSet(bucket, keyMeta(), meta);
+  if(!ok){ S.creating=false; S.createError='تعذّر إنشاء الغرفة، حاول مرة ثانية'; render(); return; }
+
+  await supabaseClient.from('game_rooms').update({host_name:name, status:'lobby'})
+    .eq('code', bucket);
+
+  await sSet(bucket, prefixPlayers()+name, {name, joinedAt:Date.now()});
+  S.name = name; S.code = bucket; S.meta = meta; S.screen='lobby'; S.lastMissionCount=0; S.creating=false;
+  render();
+  startPolling();
+  startRealtime();
+}
+
+async function actionSubmitJoin(){
+  const name = document.getElementById('joinName').value.trim();
+  const code = document.getElementById('joinCode').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+  if(!name || !code){ S.joinError='اكتب اسمك وكود الغرفة'; render(); return; }
+  S.joining = true; S.joinError=''; render();
+  try{
+    const meta = await withTimeout(sGet(code, keyMeta()), 8000);
+    if(!meta) throw new Error('ROOM_NOT_FOUND');
+    if(meta.status !== 'lobby') throw new Error('STARTED');
+
+    const currentPlayers = await withTimeout(sListValues(code, prefixPlayers()), 8000);
+    if(Object.keys(currentPlayers).length >= meta.config.numPlayers) throw new Error('FULL');
+    if(currentPlayers[name]) throw new Error('NAME_USED');
+
+    const saved = await withTimeout(sSet(code, prefixPlayers()+name, {name, joinedAt:Date.now()}), 8000);
+    if(!saved) throw new Error('SAVE_FAILED');
+
+    S.name = name; S.code = code; S.meta = meta; S.screen='lobby'; S.lastMissionCount=0; S.joining=false;
+    S.players = await sListValues(code, prefixPlayers());
+    render();
+    startPolling();
+    startRealtime();
+  }catch(e){
+    S.joining=false;
+    const msg = e && e.message;
+    S.joinError = msg==='ROOM_NOT_FOUND' ? 'ما لقيت غرفة بهذا الكود، تأكد إنك نسخته كامل'
+      : msg==='STARTED' ? 'اللعبة بدأت بالفعل في هذه الغرفة'
+      : msg==='FULL' ? 'الغرفة مكتملة'
+      : msg==='NAME_USED' ? 'هذا الاسم مستخدم، اختر اسمًا آخر'
+      : msg==='SAVE_FAILED' ? 'تعذر تسجيل دخولك. حاول مرة أخرى.'
+      : msg==='TIMEOUT' ? 'الاتصال بالخادم تأخر. تأكد من الإنترنت وحاول مرة أخرى.'
+      : 'تعذر الانضمام للغرفة. حاول مرة أخرى.';
+    render();
+  }
+}
+
+async function actionStartGame(){
+  const names = Object.keys(S.players);
+  const m = S.meta;
+  if(names.length !== m.config.numPlayers){ return; }
+  const order = shuffle(names);
+  const spyNames = shuffle(names).slice(0, m.config.numSpies);
+  const roles = {};
+  names.forEach(n=>{ roles[n] = spyNames.includes(n) ? 'spy' : 'loyal'; });
+  const next = {...m, status:'team-select', playersOrder:order, roles,
+    leaderIndex: Math.floor(Math.random()*order.length),
+    currentMission:0, attempt:1, rejectStreak:0, proposedTeam:[], missionResults:[], updatedAt:Date.now()};
+  await sSet(S.code, keyMeta(), next);
+  await supabaseClient.from('game_rooms').update({status:'playing'}).eq('code', S.code);
+  S.meta = next; render();
+}
+
+let teamPickSet = new Set();
+function togglePick(n){
+  if(teamPickSet.has(n)) teamPickSet.delete(n); else teamPickSet.add(n);
+  render();
+}
+async function actionSubmitTeam(){
+  const size = S.meta.config.teamSizes[S.meta.currentMission];
+  if(teamPickSet.size !== size){ return; }
+  const next = {...S.meta, proposedTeam:[...teamPickSet], status:'voting', updatedAt:Date.now()};
+  await sSet(S.code, keyMeta(), next);
+  S.meta = next; teamPickSet = new Set(); render();
+}
+async function actionVote(choice){
+  const currentKey = prefixVotes(S.meta.currentMission, S.meta.attempt)+S.name;
+  await sSet(S.code, currentKey, choice);
+  S.votes = {...S.votes, [S.name]: choice};
+  render();
+}
+async function actionCard(choice){
+  await sSet(S.code, prefixCards(S.meta.currentMission)+S.name, choice);
+  S.missionCards = {...S.missionCards, [S.name]: choice};
+  render();
+}
+
+function toggleHostPanel(){
+  if(!isHost()) return;
+  S.hostPanelOpen = !S.hostPanelOpen;
+  render();
+}
+
+async function actionHostKick(name){
+  if(!isHost() || !name || name===S.name) return;
+  if(!confirm('هل تريد طرد «'+name+'» من الغرفة؟')) return;
+  const stamp={name, at:Date.now(), by:S.name};
+  await sSet(S.code, 'kicked:'+name, stamp);
+  await sSet(S.code, prefixPlayers()+name, {name, joinedAt:0, kicked:true, kickedAt:stamp.at});
+  S.players = await sListValues(S.code, prefixPlayers());
+  render();
+}
+
+async function actionHostEndGame(){
+  if(!isHost()) return;
+  if(!confirm('هل تريد إنهاء اللعبة الآن؟')) return;
+  const next = {...S.meta, status:'game-over', winner:'spies', reason:'host-ended', updatedAt:Date.now()};
+  await sSet(S.code, keyMeta(), next);
+  await supabaseClient.from('game_rooms').update({status:'game-over'}).eq('code', S.code);
+  S.meta = next;
+  render();
+}
+
+async function actionHostResetGame(){
+  if(!isHost()) return;
+  if(!confirm('هل تريد إعادة اللعبة من البداية مع نفس اللاعبين؟')) return;
+  const names = Object.keys(S.players);
+  if(names.length !== S.meta.config.numPlayers){
+    alert('يجب أن يكون جميع اللاعبين موجودين قبل إعادة اللعبة.');
+    return;
+  }
+  const order = shuffle(names);
+  const spyNames = shuffle(names).slice(0, S.meta.config.numSpies);
+  const roles = {};
+  names.forEach(n=>{ roles[n] = spyNames.includes(n) ? 'spy' : 'loyal'; });
+  const next = {...S.meta, status:'team-select', playersOrder:order, roles,
+    leaderIndex:Math.floor(Math.random()*order.length), currentMission:0, attempt:1,
+    rejectStreak:0, proposedTeam:[], missionResults:[], missionDeadline:null, winner:null, reason:null, updatedAt:Date.now()};
+  await sSet(S.code, keyMeta(), next);
+  await supabaseClient.from('game_rooms').update({status:'playing'}).eq('code', S.code);
+  S.meta = next;
+  S.pendingBanner = null;
+  S.votes = {};
+  S.missionCards = {};
+  teamPickSet = new Set();
+  S.hostPanelOpen = false;
+  render();
+}
+
+function actionRestart(){
+  stopPolling();
+  stopRealtime();
+  Object.assign(S, {screen:'landing', name:'', code:'', meta:null, players:{}, lastMissionCount:0, pendingBanner:null, votes:{}, missionCards:{}, createError:'', joinError:'', hostPanelOpen:false});
+  teamPickSet = new Set();
+  render();
+}
+function actionCopyCode(){
+  navigator.clipboard && navigator.clipboard.writeText(S.code).catch(()=>{});
+}
+
+function refreshCfgDefaults(){
+  const numPlayers = parseInt(document.getElementById('cfgNumPlayers').value)||5;
+  const numMissions = parseInt(document.getElementById('cfgNumMissions').value)||5;
+  S.cfgDraft = defaultConfig(numPlayers, numMissions);
+  render();
+}
+
+/* ---------------- Views ---------------- */
+function view(){
+  if(S.screen==='landing') return viewLanding();
+  if(S.screen==='create') return viewCreate();
+  if(S.screen==='join') return viewJoin();
+  if(S.screen==='lobby') return viewLobby();
+  if(S.screen==='game') return viewGameWrap();
+  return viewLanding();
+}
+
+function viewLanding(){
+  return `
+  <div class="card hero-card">
+    <div class="hero-logo">IMPOSTERS</div>
+    <div class="hero-sub">TRUST NO ONE • ONLINE SOCIAL DEDUCTION</div>
+    <button class="btn btn-gold" onclick="actionCreateRoomGo()">🎮 إنشاء غرفة</button>
+    <button class="btn btn-ghost" onclick="actionJoinGo()">🔑 الانضمام بكود</button>
+  </div>
+  <div class="status-card">
+    <div class="stat"><b>4–12</b><span>لاعبين</span></div>
+    <div class="stat"><b>3–7</b><span>مهمات</span></div>
+    <div class="stat"><b><span class="live-dot"></span>LIVE</b><span>مزامنة فورية</span></div>
+  </div>
+  <div class="card">
+    <div class="section-title"><h3>كيف تلعب؟</h3><span class="hero-badge">IMPOSTER MODE</span></div>
+    <p>القائد يختار الفريق، الجميع يصوّت، ثم ينفذ أعضاء المهمة قراراتهم سرًا. المخربون يحاولون إسقاط الفريق دون أن ينكشفوا.</p>
+  </div>`;
+}
+function viewCreate(){
+  const c = S.cfgDraft;
+  let rows='';
+  for(let i=0;i<c.numMissions;i++){
+    rows += `<div class="cfg-row">
+      <span>مهمة ${i+1}</span>
+      <span style="display:flex;gap:14px;align-items:center;">
+        <label style="margin:0;">أعضاء <input type="number" min="1" max="${c.numPlayers-1}" id="size_${i}" value="${c.teamSizes[i]}" style="width:46px;"></label>
+        <label style="margin:0;">فشل مطلوب <input type="number" min="1" max="3" id="fail_${i}" value="${c.failsNeeded[i]}" style="width:46px;"></label>
+      </span>
+    </div>`;
+  }
+  return `
+  <div class="card">
+    <span class="eyebrow">CREATE ROOM • إعداد الغرفة</span>
+    <h2 style="font-size:19px;">اضبط قواعدكم الخاصة</h2>
+    <label>اسمك (وستكون أنت المضيف)</label>
+    <input type="text" id="hostName" placeholder="مثال: سالم">
+    <div class="row">
+      <div style="flex:1;">
+        <label>عدد اللاعبين</label>
+        <input type="number" id="cfgNumPlayers" min="4" max="12" value="${c.numPlayers}" onchange="refreshCfgDefaults()" style="width:100%;">
+      </div>
+      <div style="flex:1;">
+        <label>عدد المهمات</label>
+        <input type="number" id="cfgNumMissions" min="3" max="7" value="${c.numMissions}" onchange="refreshCfgDefaults()" style="width:100%;">
+      </div>
+      <div style="flex:1;">
+        <label>عدد المخربين</label>
+        <input type="number" id="cfgNumSpies" min="1" max="${Math.max(1,c.numPlayers-2)}" value="${c.numSpies}" style="width:100%;">
+      </div>
+    </div>
+    <label>مدة القرار داخل كل مهمة (بالثواني)</label>
+    <input type="number" id="cfgDecisionSeconds" min="15" max="180" value="${c.decisionSeconds}" style="width:100%;">
+  </div>
+  <div class="card">
+    <span class="eyebrow">حجم كل مهمة</span>
+    ${rows}
+  </div>
+  ${S.createError ? `<div class="error-box">${S.createError}</div>` : ''}
+  <button class="btn btn-gold" ${S.creating?'disabled':''} onclick="actionSubmitCreate()">${S.creating ? 'جاري الإنشاء...' : 'إنشاء الغرفة'}</button>
+  <button class="btn btn-ghost" onclick="actionRestart()">رجوع</button>
+  `;
+}
+
+function viewJoin(){
+  return `
+  <div class="card">
+    <span class="eyebrow">JOIN ROOM • الانضمام</span>
+    <h2 style="font-size:19px;">أدخل كود الغرفة</h2>
+    <label>اسمك</label>
+    <input type="text" id="joinName" placeholder="اسم مختلف عن باقي اللاعبين">
+    <label>كود الغرفة (الصقه كامل كما وصلك)</label>
+    <input type="text" id="joinCode" placeholder="مثال: ABC123">
+    ${S.joinError ? `<div class="error-box">${S.joinError}</div>` : ''}
+    <button class="btn btn-gold" ${S.joining?'disabled':''} onclick="actionSubmitJoin()">${S.joining ? 'جاري الانضمام...' : 'انضمام'}</button>
+    <button class="btn btn-ghost" onclick="actionRestart()">رجوع</button>
+  </div>`;
+}
+
+function viewLobby(){
+  if(!S.meta) return viewLanding();
+  if(S.meta.status !== 'lobby'){ S.screen='game'; return viewGameWrap(); }
+  const names = Object.keys(S.players);
+  const need = S.meta.config.numPlayers;
+  const host = isHost();
+  const list = names.map(n=>`<li><span class="dot"></span>${n}${n===S.meta.hostName?' <span class="chip leader">المضيف</span>':''}</li>`).join('');
+  const hostButton = host ? `<button class="btn btn-ghost host-settings-btn" onclick="toggleHostPanel()">⚙️ إعدادات المضيف</button>` : '';
+  const hostPanel = host && S.hostPanelOpen ? hostSettingsHTML(true) : '';
+  return `
+  <div class="card lobby-head">
+    <span class="eyebrow">LOBBY • غرفة الانتظار</span>
+    <div class="code-stamp">${S.code}</div>
+    <button class="copybtn" onclick="actionCopyCode()">نسخ الكود</button>
+    <p style="text-align:center;">شارك هذا الكود مع أصدقائك ليدخلوا من نفس الرابط</p>
+    ${hostButton}
+  </div>
+  ${hostPanel}
+  <div class="card">
+    <div class="flex-between"><h3 style="font-size:15px;">اللاعبون</h3><span class="chip">${names.length}/${need}</span></div>
+    <ul class="players-list">${list || '<p>بانتظار الانضمام...</p>'}</ul>
+    ${host
+      ? `<button class="btn btn-gold" ${names.length===need?'':'disabled'} onclick="actionStartGame()">🚀 ابدأ اللعبة</button>`
+      : `<div class="waiting"><div class="spinner"></div>بانتظار المضيف ليبدأ اللعبة...</div>`}
+  </div>`;
+}
+
+function hostSettingsHTML(inLobby=false){
+  const names=Object.keys(S.players||{});
+  return `<div class="card host-settings-card">
+    <div class="flex-between"><div><span class="eyebrow">HOST CENTER</span><h3 style="margin:4px 0 0">إدارة الغرفة</h3></div><button class="btn btn-ghost btn-small" onclick="toggleHostPanel()">✕</button></div>
+    <div class="host-stats"><span>👥 ${names.length}/${S.meta.config.numPlayers} لاعبين</span><span>🎯 ${S.meta.config.numMissions} مهمات</span><span>👑 أنت المضيف</span></div>
+    <div class="host-actions">
+      ${names.map(n=>`<div class="host-player"><span><span class="dot"></span>${n}${n===S.meta.hostName?' <small>(HOST)</small>':''}</span>${n===S.name?'<span class="chip">أنت</span>':`<button class="btn btn-red btn-small" onclick="actionHostKick('${n.replace(/'/g,"\'")}')">🚫 طرد</button>`}</div>`).join('')}
+    </div>
+    <div class="host-toolbar">
+      ${inLobby ? `<button class="btn btn-gold" ${names.length===S.meta.config.numPlayers?'':'disabled'} onclick="actionStartGame()">🚀 بدء اللعبة</button>` : `<button class="btn btn-gold" onclick="actionHostResetGame()">🔄 إعادة اللعبة بنفس اللاعبين</button>`}
+      ${!inLobby ? `<button class="btn btn-ghost" onclick="actionHostEndGame()">⏹️ إنهاء اللعبة</button>` : ''}
+    </div>
+    <div class="hint" style="text-align:center;margin-top:10px">يمكنك إدارة اللاعبين وطرد أي عضو من هنا.</div>
+  </div>`;
+}
+
+function roleRevealHTML(){
+  const myRole = S.meta.roles ? S.meta.roles[S.name] : null;
+  if(!myRole) return '';
+  const label = myRole==='spy' ? '🗡️ أنت مخرّب' : '🛡️ أنت مخلص';
+  const cls = myRole==='spy' ? 'style="color:var(--red)"' : 'style="color:var(--teal)"';
+  let spyMates='';
+  if(myRole==='spy'){
+    const others = Object.keys(S.meta.roles).filter(n=>S.meta.roles[n]==='spy' && n!==S.name);
+    if(others.length) spyMates = `<div class="hint">رفاقك المخربون: ${others.join('، ')}</div>`;
+  }
+  return `
+  <div class="card role-card">
+    <span class="eyebrow">دورك السري</span>
+    <div class="seal" onmousedown="S.revealHeld=true;render()" onmouseup="S.revealHeld=false;render()"
+      onmouseleave="S.revealHeld=false;render()" ontouchstart="S.revealHeld=true;render()" ontouchend="S.revealHeld=false;render()">
+      ${S.revealHeld ? '👁️' : '🔒'}
+    </div>
+    <div class="role-reveal" ${S.revealHeld?cls:''}>${S.revealHeld ? label : 'اضغط مطولًا على الختم لكشف دورك'}</div>
+    ${S.revealHeld ? spyMates : ''}
+  </div>`;
+}
+
+function trackHTML(){
+  const c = S.meta.config;
+  let cells='';
+  for(let i=0;i<c.numMissions;i++){
+    const r = (S.meta.missionResults||[]).find(x=>x.mission===i);
+    let cls='m';
+    if(r) cls += r.result==='success' ? ' success' : ' fail';
+    else if(i===S.meta.currentMission) cls += ' current';
+    cells += `<div class="${cls}">${r ? (r.result==='success'?'✓':'✕') : (i+1)}</div>`;
+  }
+  return `<div class="track">${cells}</div>`;
+}
+
+
+function voteStatusHTML(m){
+  const votes = S.votes || {};
+  const names = (m.playersOrder && m.playersOrder.length ? m.playersOrder : Object.keys(S.players||{}));
+  return `<div class="vote-status">${names.map(n=>{
+    const v = votes[n];
+    const state = v==='approve'
+      ? '<span class="vote-state approve">✓ وافق</span>'
+      : v==='reject'
+        ? '<span class="vote-state reject">✕ رفض</span>'
+        : '<span class="vote-state wait">… لم يصوّت</span>';
+    return `<div class="vote-row"><span class="vote-name"><span class="dot"></span>${n}</span>${state}</div>`;
+  }).join('')}</div>`;
+}
+
+
+function hostPlayersHTML(){
+  if(!isHost() || !S.meta) return '';
+  const names = Object.keys(S.players||{});
+  return `<div class="card host-panel">
+    <div class="flex-between"><span class="eyebrow">HOST CONTROL</span><span class="chip">${names.length}/${S.meta.config.numPlayers}</span></div>
+    <div class="host-actions">
+      ${names.map(n=>`<div class="host-player"><span><span class="dot"></span>${n}${n===S.meta.hostName?' <small>(HOST)</small>':''}</span>
+      ${n===S.name?'<span class="chip">أنت</span>':`<button class="btn btn-red btn-small" onclick="kickPlayer('${n.replace(/'/g,"\'")}')">🚫 طرد</button>`}</div>`).join('')}
+    </div>
+    <div class="host-toolbar">
+      <button class="btn btn-gold" onclick="actionHostResetGame()">🔀 إعادة الأدوار</button>
+      <button class="btn btn-ghost" onclick="actionHostEndGame()">⏹️ إنهاء</button>
+    </div>
+    <div class="hint" style="text-align:center;margin-top:10px">يمكنك طرد أي لاعب قبل أو أثناء اللعبة.</div>
+  </div>`;
+}
+
+function viewGameWrap(){
+  if(!S.meta) return viewLanding();
+  const m = S.meta;
+  let bannerHTML='';
+  if(S.pendingBanner){
+    const ok = S.pendingBanner.result==='success';
+    bannerHTML = `<div class="banner"><div class="result ${ok?'success':'fail'}">
+      <span class="big">${ok?'✅':'❌'}</span>
+      المهمة ${S.pendingBanner.mission+1}: ${ok?'نجحت':'فشلت'}
+    </div></div>`;
+  }
+  if(m.status==='game-over') return bannerHTML + viewGameOver();
+  const hostControls = isHost() ? `<div class="host-fab-wrap"><button class="btn btn-gold host-main-btn" onclick="toggleHostPanel()">⚙️ إعدادات المضيف</button></div>${S.hostPanelOpen ? hostSettingsHTML(false) : ''}` : '';
+  return bannerHTML + roleRevealHTML() + trackHTML() + viewPhase() + hostControls;
+}
+
+function viewPhase(){
+  const m = S.meta;
+  const leaderName = m.playersOrder[m.leaderIndex % m.playersOrder.length];
+  const teamSize = m.config.teamSizes[m.currentMission];
+
+  if(m.status==='team-select'){
+    if(leaderName === S.name){
+      const options = m.playersOrder.map(n=>{
+        const sel = teamPickSet.has(n);
+        return `<div class="pick ${sel?'selected':''}" onclick="togglePick('${n.replace(/'/g,"\\'")}')"><span>${n}</span><span class="box"></span></div>`;
+      }).join('');
+      return `
+      <div class="card">
+        <span class="eyebrow">مهمة ${m.currentMission+1} — أنت القائد</span>
+        <h3 style="font-size:16px;">اختر ${teamSize} أعضاء (${teamPickSet.size}/${teamSize})</h3>
+        ${m.rejectStreak>0?`<p style="color:var(--red);">تم رفض ${m.rejectStreak} تشكيلة/تشكيلات سابقة</p>`:''}
+        ${options}
+        <button class="btn btn-gold" ${teamPickSet.size===teamSize?'':'disabled'} onclick="actionSubmitTeam()">إرسال الفريق للتصويت</button>
+      </div>`;
+    }
+    return `<div class="card"><span class="eyebrow">مهمة ${m.currentMission+1}</span>
+      <div class="waiting"><div class="spinner"></div>القائد <b style="color:var(--gold)">${leaderName}</b> يختار أعضاء المهمة...</div></div>`;
+  }
+
+  if(m.status==='voting'){
+    const teamList = m.proposedTeam.map(n=>`<span class="chip" style="margin-left:6px;">${n}</span>`).join('');
+    const myVote = (S.votes||{})[S.name];
+    return `<div class="card">
+      <span class="eyebrow">التصويت — مهمة ${m.currentMission+1}</span>
+      <p>القائد <b style="color:var(--gold)">${leaderName}</b> اقترح: ${teamList}</p>
+      <div class="row">
+        <button class="btn btn-teal" onclick="actionVote('approve')">أوافق</button>
+        <button class="btn btn-red" onclick="actionVote('reject')">أرفض</button>
+      </div>
+      <p class="hint" style="text-align:center;">يمكنك تغيير تصويتك، وستتحدث حالتك للجميع فورًا.</p>
+      ${voteStatusHTML(m)}
+    </div>`;
+  }
+
+  if(m.status==='mission'){
+    const onTeam = m.proposedTeam.includes(S.name);
+    const myRole = m.roles[S.name];
+    const remaining = m.missionDeadline ? Math.max(0, Math.round((m.missionDeadline - Date.now())/1000)) : null;
+    const timerHTML = remaining!==null ? `<div class="timer-ring ${remaining<=10?'low':''}">${remaining}</div><p style="text-align:center;">ثانية متبقية لقرار الفريق</p>` : '';
+    const teamList = m.proposedTeam.map(n=>`<span class="chip">${n}</span>`).join('');
+    const missionInfo = `<div class="mission-info">
+      <span class="chip">👥 المطلوب: ${teamSize} لاعبين</span>
+      <span class="chip">🎯 داخل المهمة: ${m.proposedTeam.length}</span>
+    </div>
+    <p style="text-align:center;">أعضاء المهمة: ${teamList}</p>`;
+    if(onTeam){
+      const myCard = (S.missionCards||{})[S.name];
+      return `<div class="card" style="text-align:center;">
+        <span class="eyebrow">تنفيذ المهمة ${m.currentMission+1}</span>
+        ${missionInfo}
+        ${timerHTML}
+        <p>أنت ضمن فريق هذه المهمة. قرر سرًا:</p>
+        <button class="btn btn-teal" ${myCard?'disabled':''} onclick="actionCard('success')">نجاح</button>
+        ${myRole==='spy' ? `<button class="btn btn-red" ${myCard?'disabled':''} onclick="actionCard('sabotage')">تخريب</button>` : ''}
+        ${myCard ? `<p class="hint">تم تسجيل قرارك: ${myCard==='sabotage'?'تخريب':'نجاح'}</p>` : ''}
+      </div>`;
+    }
+    return `<div class="card" style="text-align:center;"><span class="eyebrow">مهمة ${m.currentMission+1}</span>
+      ${missionInfo}
+      ${timerHTML}
+      <div class="waiting" style="justify-content:center;"><div class="spinner"></div>أعضاء المهمة يقررون النتيجة سرًا...</div></div>`;
+  }
+  return '';
+}
+
+function viewGameOver(){
+  const m = S.meta;
+  const win = m.winner==='loyal';
+  const roleRows = m.playersOrder.map(n=>`<li><span>${n}</span><span class="tag ${m.roles[n]==='spy'?'spy':'loyal'}">${m.roles[n]==='spy'?'مخرّب':'مخلص'}</span></li>`).join('');
+  return `
+  <div class="card" style="text-align:center;">
+    <span class="eyebrow">النتيجة النهائية</span>
+    <h2 style="font-size:22px; color:${win?'var(--teal)':'var(--red)'};">${win ? '🛡️ فاز المخلصون' : '🗡️ فاز المخربون'}</h2>
+    <p>${m.reason==='five-rejections' ? 'رُفضت التشكيلات خمس مرات متتالية' : 'حسمت الأغلبية نتيجة المهمات'}</p>
+  </div>
+  <div class="card">
+    <h3 style="font-size:15px; margin-bottom:8px;">الأدوار الحقيقية</h3>
+    <ul class="players-list role-list">${roleRows}</ul>
+  </div>
+  ${isHost() ? `
+    <button class="btn btn-gold" onclick="actionHostResetGame()">إعادة اللعبة مع نفس اللاعبين</button>
+    <button class="btn btn-ghost" onclick="actionRestart()">خروج</button>
+  ` : `<button class="btn btn-gold" onclick="actionRestart()">خروج</button>`}
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
